@@ -1,19 +1,20 @@
 import streamlit as st
 import numpy as np
+import altair as alt
 
-st.set_page_config(page_title="Tiempos de Escape del Proceso Estocástico", layout="wide")
-st.title("⏱️ Tiempos de Escape del Movimiento Browniano")
+st.set_page_config(page_title="Escape del Proceso Estocástico", layout="wide")
+st.title("⏱️ Movimiento Browniano y Tiempos de Escape")
 
 # --- Parámetros ---
-st.sidebar.header("⚙️ Parámetros de simulación")
-n_steps = st.sidebar.slider("Número de pasos", 100, 5000, 1000, step=100)
+st.sidebar.header("⚙️ Parámetros")
+n_steps = st.sidebar.slider("Número de pasos", 100, 2000, 500, step=100)
 dt = st.sidebar.slider("Δt", 0.001, 0.1, 0.01)
 n_particles = st.sidebar.slider("Número de partículas", 1, 5, 2)
-max_n = st.sidebar.slider("Máximo n para los intervalos [1/n, n]", 1, 20, 5)
+max_n = st.sidebar.slider("Máximo n para los intervalos [1/n, n]", 1, 5, 3)
 seed = st.sidebar.number_input("Semilla aleatoria", value=0, min_value=0)
 np.random.seed(seed if seed != 0 else None)
 
-# --- Simulación del movimiento browniano ---
+# --- Simulación ---
 X = np.zeros((n_steps, n_particles))
 for i in range(n_particles):
     dW = np.sqrt(dt) * np.random.randn(n_steps)
@@ -21,31 +22,41 @@ for i in range(n_particles):
 
 time_points = np.arange(n_steps) * dt
 
-# --- Detección de tiempos de escape ---
-st.subheader("⏳ Tiempos de escape del intervalo [1/n, n]")
+# --- Preparar datos para Altair ---
+chart_data = []
+for i in range(n_particles):
+    for t, x in zip(time_points, X[:, i]):
+        chart_data.append({"Tiempo": t, "Posición": x, "Partícula": f"Partícula {i+1}", "Escape": False})
 
-escape_dict = {}
+# --- Detectar escapes y marcar ---
 for n in range(1, max_n + 1):
     lower, upper = 1/n, n
-    escape_times = []
     for i in range(n_particles):
-        escapes = time_points[(X[:, i] < lower) | (X[:, i] > upper)]
-        escape_times.append(escapes)
-    escape_dict[n] = escape_times
+        for idx, t in enumerate(time_points):
+            if X[idx, i] < lower or X[idx, i] > upper:
+                chart_data.append({
+                    "Tiempo": t,
+                    "Posición": X[idx, i],
+                    "Partícula": f"Partícula {i+1}",
+                    "Escape": True
+                })
 
-# --- Mostrar resultados ---
-for n in range(1, max_n + 1):
-    st.markdown(f"**n = {n}, intervalo = [{1/n:.3f}, {n}]**")
-    for i, times in enumerate(escape_dict[n]):
-        if len(times) > 0:
-            st.write(f"Partícula {i+1}: tiempos de escape ≈ {times}")
-        else:
-            st.write(f"Partícula {i+1}: no salió del intervalo")
-    st.write("---")
+# --- Convertir a NumPy estructurado para Altair ---
+import pandas as pd
+df = pd.DataFrame(chart_data)
 
-# --- Visualización de las trayectorias ---
-st.subheader("📈 Trayectorias del movimiento browniano")
-columns = [f"Partícula {i+1}" for i in range(n_particles)]
-data = {columns[i]: X[:, i] for i in range(n_particles)}
-data["Tiempo"] = time_points
-st.line_chart(data)
+# --- Graficar ---
+base = alt.Chart(df).mark_line().encode(
+    x='Tiempo',
+    y='Posición',
+    color='Partícula'
+)
+
+# Puntos de escape
+points = alt.Chart(df[df['Escape']]).mark_point(shape='cross', size=60, color='red').encode(
+    x='Tiempo',
+    y='Posición',
+    tooltip=['Partícula', 'Tiempo', 'Posición']
+)
+
+st.altair_chart(base + points, use_container_width=True)
