@@ -3,12 +3,6 @@ import streamlit as st
 # from streamlit_option_menu import option_menu
 
 # --- 1. CONFIGURACIÓN DE PÁGINA ---
-st.set_page_config(
-    page_title="UNMSM - Proyectos de Bioinformática",
-    page_icon="🔬", # Un ícono para la pestaña del navegador
-    layout="centered", # Usamos "centered" para que no sea tan ancho
-    initial_sidebar_state="auto" # "auto" hace que se oculte en móviles
-)
 
 pagina_mov_browniano = st.Page("pages/mov_browniano.py", title="Movimiento Browniano")
 pagina_tiempo_explosion = st.Page("pages/tiempo_explosion.py", title="Tiempo de explosión")
