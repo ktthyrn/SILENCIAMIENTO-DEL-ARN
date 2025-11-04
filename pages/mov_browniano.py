@@ -44,7 +44,7 @@ else:
     data = {f"Partícula {j+1}": X[:, j] for j in range(n_particles)}
     if show_mean:
         data["Promedio"] = np.mean(X, axis=1)
-    data["Tiempo"] = time_points
+    #data["Tiempo"] = time_points
     st.line_chart(data)
 
 # Explicación
