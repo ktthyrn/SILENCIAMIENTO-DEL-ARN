@@ -9,8 +9,10 @@ pagina_tiempo_explosion = st.Page("pages/tiempo_explosion.py", title="Tiempo de 
 pagina_euler = st.Page("pages/euler.py", title="Método de Euler")
 pagina_euler_maruyama = st.Page("pages/euler_maruyama.py", title="Método de Euler-Maruyama")
 pagina_milstein = st.Page("pages/milstein.py", title="Método de Milstein")
+homepage = st.Page("pages/home.py", title="Home")
 
-pg = st.navigation([pagina_mov_browniano,
+pg = st.navigation([homepage,
+                    pagina_mov_browniano,
                     pagina_tiempo_explosion,
                     pagina_euler,
                     pagina_euler_maruyama,
