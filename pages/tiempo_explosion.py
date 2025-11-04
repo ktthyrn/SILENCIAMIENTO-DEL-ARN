@@ -8,7 +8,7 @@ st.title("⏱️ Movimiento Browniano y Tiempos de Escape")
 
 # --- Parámetros ---
 st.sidebar.header("⚙️ Parámetros")
-n_steps = st.sidebar.slider("Número de pasos", 100, 2000, 500, step=100)
+n_steps = st.sidebar.slider("Número de pasos", 100, 20000, 500, step=100)
 dt = st.sidebar.slider("Δt", 0.001, 0.1, 0.01)
 # n_particles = st.sidebar.slider("Número de partículas", 1, 5, 2)
 n_particles=1
