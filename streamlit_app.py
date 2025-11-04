@@ -60,7 +60,7 @@ if seccion_seleccionada == "Silenciamiento del ARN":
     La función más destacada del silenciamiento del ARN es la discriminación 
     entre lo 'propio' (self) y lo 'ajeno' (non-self) a nivel genético. Actúa 
     para suprimir la expresión de 'genes ajenos', elementos potencialmente 
-    dañinos como los codificados en virus o transposones, secuencias de ADN que pueden cambiar de posición dentro del genoma de un organismo.
+    dañinos como los codificados en virus o transposones.
     """)
     
     # 3. IMAGEN (Como pediste: luego la imagen)
