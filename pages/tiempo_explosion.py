@@ -23,7 +23,7 @@ for i in range(n_particles):
 
 time_points = np.arange(n_steps) * dt
 
-# --- Preparar datos para Altair ---
+# --- Preparar datos para Altair -
 df_lines = pd.DataFrame({
     "Tiempo": np.tile(time_points, n_particles),
     "Posición": X.flatten(),
@@ -44,6 +44,8 @@ for n in range(1, max_n + 1):
                 "Posición": X[idx, i],
                 "Partícula": f"Partícula {i+1}"
             })
+
+escape_points
 
 df_escapes = pd.DataFrame(escape_points)
 
