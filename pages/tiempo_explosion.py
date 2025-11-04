@@ -35,7 +35,7 @@ df_lines = pd.DataFrame({
 escape_points = []
 seen = set()  # para evitar duplicados exactos (tiempo, posición, partícula)
 
-for n in range(1, max_n + 1):
+for n in range(2, max_n + 1):
     lower, upper = 1/n, n
     for i in range(n_particles):
         escape_idx = np.where((X[:, i] < lower) | (X[:, i] > upper))[0]
