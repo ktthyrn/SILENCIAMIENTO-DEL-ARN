@@ -35,7 +35,7 @@ df_lines = pd.DataFrame({
 escape_points = []
 seen = set()  # para evitar duplicados exactos (tiempo, posición, partícula)
 
-for n in range(2, max_n + 1):
+for n in range(1, max_n + 1):
     lower, upper = 1/n, n
     for i in range(n_particles):
         escape_idx = np.where((X[:, i] < lower) | (X[:, i] > upper))[0]
@@ -62,10 +62,15 @@ base = alt.Chart(df_lines).mark_line().encode(
     color='Partícula'
 )
 
-points = alt.Chart(df_escapes).mark_point(shape='cross', size=60, color='red').encode(
-    x='Tiempo',
-    y='Posición',
-    tooltip=['Partícula', 'Tiempo', 'Posición']
-)
+# Only add escape points if there are any
+if not df_escapes.empty:
+    points = alt.Chart(df_escapes).mark_point(shape='cross', size=60, color='red').encode(
+        x='Tiempo',
+        y='Posición',
+        tooltip=['Partícula', 'Tiempo', 'Posición']
+    )
+    chart = base + points
+else:
+    chart = base
 
-st.altair_chart(base + points, use_container_width=True)
+st.altair_chart(chart, use_container_width=True)
