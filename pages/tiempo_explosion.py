@@ -16,12 +16,13 @@ seed = st.sidebar.number_input("Semilla aleatoria", value=0, min_value=0)
 np.random.seed(seed if seed != 0 else None)
 
 # --- Simulación ---
-X = np.zeros((n_steps, n_particles))
-for i in range(n_particles):
-    dW = np.sqrt(dt) * np.random.randn(n_steps)
-    X[:, i] = np.cumsum(dW)
-
 time_points = np.arange(n_steps) * dt
+X = np.zeros((n_steps, n_particles))
+
+for i in range(n_particles):
+    dW = np.sqrt(dt) * np.random.randn(n_steps)/10
+    X[:, i] = 1 + np.cumsum(dW)  # empieza en 1
+
 
 # --- Preparar datos para Altair -
 df_lines = pd.DataFrame({
