@@ -32,23 +32,28 @@ df_lines = pd.DataFrame({
 
 # --- Detectar escapes ---
 escape_points = []
+seen = set()  # para evitar duplicados exactos (tiempo, posición, partícula)
+
 for n in range(1, max_n + 1):
     lower, upper = 1/n, n
     for i in range(n_particles):
-        # Encontrar el primer índice donde se escapa del intervalo
         escape_idx = np.where((X[:, i] < lower) | (X[:, i] > upper))[0]
-        if len(escape_idx) > 0:
-            idx = escape_idx[0]  # primer cruce
-            escape_points.append({
-                "Tiempo": time_points[idx],
-                "Posición": X[idx, i],
-                "Partícula": f"Partícula {i+1}"
-            })
-
-escape_points
+        if escape_idx.size > 0:
+            idx = int(escape_idx[0])
+            key = (idx, i)  # indice temporal y partícula
+            if key not in seen:
+                seen.add(key)
+                escape_points.append({
+                    "Tiempo": time_points[idx],
+                    "Posición": X[idx, i],
+                    "Partícula": f"Partícula {i+1}",
+                    "n": n
+                })
 
 df_escapes = pd.DataFrame(escape_points)
 
+
+escape_points
 # --- Graficar ---
 base = alt.Chart(df_lines).mark_line().encode(
     x='Tiempo',
