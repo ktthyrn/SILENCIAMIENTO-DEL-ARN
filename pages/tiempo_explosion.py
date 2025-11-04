@@ -10,8 +10,9 @@ st.title("⏱️ Movimiento Browniano y Tiempos de Escape")
 st.sidebar.header("⚙️ Parámetros")
 n_steps = st.sidebar.slider("Número de pasos", 100, 2000, 500, step=100)
 dt = st.sidebar.slider("Δt", 0.001, 0.1, 0.01)
-n_particles = st.sidebar.slider("Número de partículas", 1, 5, 2)
-max_n = st.sidebar.slider("Máximo n para los intervalos [1/n, n]", 1, 5, 3)
+# n_particles = st.sidebar.slider("Número de partículas", 1, 5, 2)
+n_particles=1
+max_n = st.sidebar.slider("Máximo n para los intervalos [1/n, n]", 1, 100, 3)
 seed = st.sidebar.number_input("Semilla aleatoria", value=0, min_value=0)
 np.random.seed(seed if seed != 0 else None)
 
