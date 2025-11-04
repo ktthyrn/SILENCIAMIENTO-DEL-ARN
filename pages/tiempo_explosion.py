@@ -81,7 +81,7 @@ for n in range(2, max_n + 1):
 df_escapes = pd.DataFrame(escape_points)
 
 
-escape_points
+#escape_points
 # --- Graficar ---
 base = alt.Chart(df_lines).mark_line().encode(
     x='Tiempo',
