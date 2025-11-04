@@ -10,7 +10,7 @@ st.set_page_config(
 # --- Título y Encabezado ---
 st.title("🧬 Entendiendo el Silenciamiento del ARN")
 st.write("Esta app explica los conceptos básicos del RNAi (Interferencia de ARN).")
-
+"Hola"
 # --- Contenido ---
 st.header("¿Qué es el Silenciamiento del ARN (RNAi)?")
 st.write("""
