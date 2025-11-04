@@ -35,7 +35,33 @@ df_lines = pd.DataFrame({
 escape_points = []
 seen = set()  # para evitar duplicados exactos (tiempo, posición, partícula)
 
-for n in range(1, max_n + 1):
+import pandas as pd
+import numpy as np
+
+max_n=6
+n_particles=1
+n_steps = 10000
+dt=0.01
+
+# --- Simulación ---
+time_points = np.arange(n_steps) * dt
+X = np.zeros((n_steps, n_particles))
+
+for i in range(n_particles):
+    dW = np.sqrt(dt) * np.random.randn(n_steps)/10
+    X[:, i] = 1 + np.cumsum(dW)  # empieza en 1
+
+# --- Preparar datos para Altair -
+df_lines = pd.DataFrame({
+    "Tiempo": np.tile(time_points, n_particles),
+    "Posición": X.flatten(),
+    "Partícula": np.repeat([f"Partícula {i+1}" for i in range(n_particles)], n_steps)
+})
+# --- Detectar escapes ---
+escape_points = []
+seen = set()  # para evitar duplicados exactos (tiempo, posición, partícula)
+
+for n in range(2, max_n + 1):
     lower, upper = 1/n, n
     for i in range(n_particles):
         escape_idx = np.where((X[:, i] < lower) | (X[:, i] > upper))[0]
